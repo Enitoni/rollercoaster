@@ -56,7 +56,6 @@ where
     /// ```
     /// # use rollercoaster::Rollercoaster;
     /// #
-    ///
     /// let words = vec!["super", "sad", "mega", "rude", "cool", "sand"];
     ///
     /// let grouped: Vec<_> = words
