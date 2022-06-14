@@ -14,4 +14,4 @@ mod rollercoaster {
     }
 }
 
-pub use rollercoaster::Rollercoaster;
+pub use crate::rollercoaster::Rollercoaster;
