@@ -64,7 +64,8 @@ where
     let grouped: Vec<_> = words
         .into_iter()
         .group_by(|w| w.starts_with("s"))
-        .map(|g| g.items).collect();
+        .map(|g| g.items)
+        .collect();
 
     assert_eq!(grouped, vec![
         vec!["super", "sad"],
