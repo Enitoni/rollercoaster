@@ -15,20 +15,25 @@ where
     ///
     /// # Example
     /// ```
+    /// # use rollercoaster::Rollercoaster;
+    /// #
     /// let mut items = vec![
     ///     "apple",
     ///     "banana",
     ///     "orange"
-    /// ].iter().memory();
+    /// ].into_iter().memory();
     ///
     /// for fruit in items.by_ref() {
     ///     if fruit.starts_with("o") {
+    ///         // Remember orange for next iteration
     ///         items.remember(fruit);
+    ///
+    ///         // Prevent infinite loop
     ///         break;
     ///     }
     /// }
     ///
-    /// assert_eq!(items.next(), "orange");
+    /// assert_eq!(items.next(), Some("orange"));
     /// ```
     pub fn remember(&mut self, item: I::Item) {
         self.items.push(item);
