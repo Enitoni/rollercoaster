@@ -1,4 +1,4 @@
-use crate::memory::Memory;
+use crate::{memory::Memory, Rollercoaster};
 
 pub trait GroupKind: PartialEq + Copy {}
 impl<T> GroupKind for T where T: PartialEq + Copy {}
@@ -9,6 +9,18 @@ where
 {
     underlying: Memory<I>,
     predicate: P,
+}
+
+impl<I, P> GroupBy<I, P>
+where
+    I: Iterator,
+{
+    pub(crate) fn new(iter: I, predicate: P) -> Self {
+        Self {
+            underlying: iter.memory(),
+            predicate,
+        }
+    }
 }
 
 pub struct Group<I, K> {
