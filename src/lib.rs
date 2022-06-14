@@ -12,6 +12,8 @@ mod rollercoaster {
             Memory::new(self)
         }
     }
+
+    impl<T: Iterator> Rollercoaster for T {}
 }
 
 pub use crate::rollercoaster::Rollercoaster;
