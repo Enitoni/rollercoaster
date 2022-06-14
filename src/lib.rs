@@ -1,3 +1,4 @@
+mod grouping;
 mod memory;
 
 mod rollercoaster {
