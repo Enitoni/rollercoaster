@@ -1,11 +1,12 @@
 [package]
 name = "rollercoaster"
-version = "0.1.0"
+description = "A set of useful iterators"
+
+version = "0.0.1"
 edition = "2021"
+license = "MIT"
+
+repository = "https://github.com/Enitoni/rollercoaster"
 authors = [
-  "enitoni"
+  "Enitoni <root@enitoni.dev>"
 ]
-
-# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
-
-[dependencies]
