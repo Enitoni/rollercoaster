@@ -1,3 +1,4 @@
+mod concat;
 mod grouping;
 mod memory;
 
