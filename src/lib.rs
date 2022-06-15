@@ -13,7 +13,7 @@ where
     for the next iteration.
 
     This is useful in situations where you need to:
-    - Read from the item, then use it the next iteration.
+    - Read from the item, then use it in the next iteration.
     - Insert items returned by the iterator.
 
     ## How is this different from `peekable()`?
