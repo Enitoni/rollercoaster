@@ -66,26 +66,24 @@ where
 
 #[cfg(test)]
 mod test {
-    use crate::memory::Memory;
-
-    use super::GroupBy;
+    use crate::Rollercoaster;
 
     #[test]
-    fn it_groups() {
-        let mut group = GroupBy {
-            predicate: |s: &char| s.is_whitespace(),
-            underlying: Memory::new("This is a grouping test!".chars()),
-        }
-        .map(|g| (g.items.into_iter().collect::<String>(), g.kind));
+    fn it_groups_correctly() {
+        let group: Vec<(Vec<i32>, i32)> = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
+            .into_iter()
+            .group_by(|c| (*c - 1) / 3)
+            .map(|g| (g.items, g.kind))
+            .collect();
 
-        assert_eq!(group.next(), Some(("This".to_string(), false)));
-        assert_eq!(group.next(), Some((" ".to_string(), true)));
-        assert_eq!(group.next(), Some(("is".to_string(), false)));
-        assert_eq!(group.next(), Some((" ".to_string(), true)));
-        assert_eq!(group.next(), Some(("a".to_string(), false)));
-        assert_eq!(group.next(), Some((" ".to_string(), true)));
-        assert_eq!(group.next(), Some(("grouping".to_string(), false)));
-        assert_eq!(group.next(), Some((" ".to_string(), true)));
-        assert_eq!(group.next(), Some(("test!".to_string(), false)));
+        assert_eq!(
+            group,
+            vec![
+                (vec![1, 2, 3], 0),
+                (vec![4, 5, 6], 1),
+                (vec![7, 8, 9], 2),
+                (vec![10], 3),
+            ]
+        );
     }
 }
