@@ -75,21 +75,15 @@ where
 
 #[cfg(test)]
 mod test {
-    use super::Memory;
+    use crate::Rollercoaster;
 
-    fn mock() -> Vec<String> {
-        vec![
-            "a".to_string(),
-            "b".to_string(),
-            "c".to_string(),
-            "d".to_string(),
-            "e".to_string(),
-        ]
+    fn mock() -> Vec<&'static str> {
+        vec!["a", "b", "c", "d", "e"]
     }
 
     #[test]
     fn it_remembers() {
-        let mut memory = Memory::new(mock().into_iter());
+        let mut memory = mock().into_iter().memory();
 
         for letter in memory.by_ref() {
             if letter == "d" {
@@ -98,19 +92,20 @@ mod test {
             }
         }
 
-        assert_eq!(memory.next(), Some("d".to_string()));
-        assert_eq!(memory.next(), Some("e".to_string()));
+        assert_eq!(memory.collect::<Vec<_>>(), vec!["d", "e"]);
     }
 
     #[test]
     fn it_forgets() {
-        let mut memory = Memory::new(mock().into_iter());
+        let mut memory = mock().into_iter().memory();
 
-        memory.remember("f".to_string());
-        memory.remember("g".to_string());
+        memory.remember("f");
+        memory.remember("g");
         memory.forget();
 
-        assert_eq!(memory.next(), Some("f".to_string()));
-        assert_eq!(memory.next(), Some("a".to_string()));
+        assert_eq!(
+            memory.collect::<Vec<_>>(),
+            vec!["f", "a", "b", "c", "d", "e"]
+        );
     }
 }
