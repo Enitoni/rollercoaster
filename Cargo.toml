@@ -2,7 +2,7 @@
 name = "rollercoaster"
 description = "A set of useful iterators"
 
-version = "0.0.1"
+version = "0.0.2"
 edition = "2021"
 license = "MIT"
 
