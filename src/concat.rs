@@ -38,9 +38,61 @@ where
     }
 }
 
+ext_impl! {
+    /**
+    Creates an iterator that appends another iterator
+    to the end of the existing iterator.
+
+    # Example
+    ```
+    # use rollercoaster::Rollercoaster;
+    #
+    let a = vec!["monads", "are", "just", "monoids"];
+    let b = vec!["in", "the", "category", "of", "endofunctors"];
+
+    let result: Vec<_> = a
+        .into_iter()
+        .append(b.into_iter())
+        .collect();
+
+    assert_eq!(
+        result.join(" "),
+        "monads are just monoids in the category of endofunctors".to_string()
+    );
+    ```
+    */
+    fn append<I: Iterator<Item = Self::Item>>(self, items: I) -> Concat<Self, I> {
+        Concat::new(self, items, ConcatSide::End)
+    }
+
+    /**
+    Creates an iterator that prepends another iterator
+    to the start of the existing iterator. This is the same as `items.append(self)`
+
+    # Example
+    ```
+    # use rollercoaster::Rollercoaster;
+    #
+    let a = vec!["opposite", "day"];
+    let yoda = vec!["it", "is"];
+
+    let result: Vec<_> = a
+        .into_iter()
+        .prepend(yoda.into_iter())
+        .collect();
+
+    assert_eq!(result.join(" "), "it is opposite day".to_string());
+    ```
+    */
+    fn prepend<I: Iterator<Item = Self::Item>>(self, items: I) -> Concat<Self, I> {
+        Concat::new(self, items, ConcatSide::Start)
+    }
+
+}
+
 #[cfg(test)]
 mod test {
-    use super::{Concat, ConcatSide};
+    use crate::Rollercoaster;
 
     #[test]
     fn it_concats_both_ways() {
@@ -48,11 +100,7 @@ mod test {
         let b = vec![4, 5, 6].into_iter();
         let c = vec![7, 8, 9].into_iter();
 
-        let iter = Concat::new(b, a, ConcatSide::Start);
-        let iter = Concat::new(iter, c, ConcatSide::End);
-
-        let result: Vec<_> = iter.collect();
-
+        let result: Vec<_> = b.prepend(a).append(c).collect();
         assert_eq!(result, vec![1, 2, 3, 4, 5, 6, 7, 8, 9])
     }
 }

@@ -1,7 +1,11 @@
+#[macro_use]
+mod macros;
+
 mod concat;
 mod grouping;
 mod memory;
 
+use crate::concat::*;
 use crate::grouping::*;
 use crate::memory::*;
 
@@ -9,6 +13,8 @@ pub trait Rollercoaster: Iterator
 where
     Self: Sized,
 {
+    add_exts!(concat);
+
     /**
     Creates an iterator that allows remembering values
     for the next iteration.
