@@ -9,7 +9,7 @@ macro_rules! ext_impl {
 }
 
 macro_rules! add_exts {
-    ($($name:ident)*) => {
+    ($($name:ident),*) => {
         $(
             $name::exts!();
         )*

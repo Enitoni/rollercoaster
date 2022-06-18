@@ -64,6 +64,45 @@ where
     }
 }
 
+ext_impl! {
+    /**
+    Creates an iterator that group items by a predicate.
+
+    The value returned by the predicate decides
+    which group the set of items belong to.
+
+    Note that a new group is created each time the value
+    returned by the predicate changes. It does not group all items
+    into a set of specific groups.
+
+    # Example
+    ```
+    # use rollercoaster::Rollercoaster;
+    #
+    let words = vec!["super", "sad", "mega", "rude", "cool", "sand"];
+
+    let grouped: Vec<_> = words
+        .into_iter()
+        .group_by(|w| w.starts_with("s"))
+        .map(|g| g.items)
+        .collect();
+
+    assert_eq!(grouped, vec![
+        vec!["super", "sad"],
+        vec!["mega", "rude", "cool"],
+        vec!["sand"],
+    ]);
+    ```
+    */
+    fn group_by<P, K>(self, predicate: P) -> GroupBy<Self, P>
+    where
+        P: Fn(&Self::Item) -> K,
+        K: GroupKind,
+    {
+        GroupBy::new(self, predicate)
+    }
+}
+
 #[cfg(test)]
 mod test {
     use crate::Rollercoaster;
