@@ -125,7 +125,7 @@ mod test {
 
         assert_eq!(
             memory.collect::<Vec<_>>(),
-            vec!["f", "a", "b", "c", "d", "e"]
+            vec!["f", "b", "b", "c", "d", "e"]
         );
     }
 }
