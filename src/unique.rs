@@ -31,7 +31,7 @@ where
 
     fn next(&mut self) -> Option<Self::Item> {
         let item = self.underlying.find(|i| {
-            let key = (self.identify)(&i);
+            let key = (self.identify)(i);
             !self.seen.contains(&key)
         });
 
