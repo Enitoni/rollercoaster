@@ -10,7 +10,7 @@ impl<I, K, F> Unique<I, K, F>
 where
     I: Iterator,
     K: Hash,
-    F: Fn(&I::Item) -> K,
+    F: FnMut(&I::Item) -> K,
 {
     pub(crate) fn new(iter: I, identify: F) -> Self {
         Self {
@@ -25,7 +25,7 @@ impl<I, K, F> Iterator for Unique<I, K, F>
 where
     I: Iterator,
     K: Eq + Hash,
-    F: Fn(&I::Item) -> K,
+    F: FnMut(&I::Item) -> K,
 {
     type Item = I::Item;
 
@@ -80,7 +80,7 @@ ext_impl! {
     fn unique_by<K, F>(self, identify: F) -> Unique<Self, K, F>
     where
         K: Hash + Eq,
-        F: Fn(&Self::Item) -> K
+        F: FnMut(&Self::Item) -> K
     {
         Unique::new(self, identify)
     }

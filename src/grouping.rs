@@ -31,7 +31,7 @@ pub struct Group<I, K> {
 impl<I, P, K> Iterator for GroupBy<I, P>
 where
     I: Iterator,
-    P: Fn(&I::Item) -> K,
+    P: FnMut(&I::Item) -> K,
     K: GroupKind,
 {
     type Item = Group<I::Item, K>;
@@ -96,7 +96,7 @@ ext_impl! {
     */
     fn group_by<P, K>(self, predicate: P) -> GroupBy<Self, P>
     where
-        P: Fn(&Self::Item) -> K,
+        P: FnMut(&Self::Item) -> K,
         K: GroupKind,
     {
         GroupBy::new(self, predicate)
