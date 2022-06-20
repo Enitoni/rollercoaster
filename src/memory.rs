@@ -10,42 +10,19 @@ impl<I> Memory<I>
 where
     I: Iterator,
 {
-    /// Puts the item into memory, so that on the next iteration
-    /// this item is returned.
-    ///
-    /// # Example
-    /// ```
-    /// # use rollercoaster::Rollercoaster;
-    /// #
-    /// let mut items = vec![
-    ///     "apple",
-    ///     "banana",
-    ///     "orange"
-    /// ].into_iter().memory();
-    ///
-    /// for fruit in items.by_ref() {
-    ///     if fruit.starts_with("o") {
-    ///         // Remember orange for next iteration
-    ///         items.remember(fruit);
-    ///
-    ///         // Prevent infinite loop
-    ///         break;
-    ///     }
-    /// }
-    ///
-    /// assert_eq!(items.next(), Some("orange"));
-    /// ```
+    /// Remember this item for the next iteration.
     pub fn remember(&mut self, item: I::Item) {
         self.items.push(item);
     }
 
     /// Clears all items that were remembered,
-    /// causing the iterator to return new items.
+    /// and the iterator will now return items
+    /// from the underlying iterator.
     pub fn clear(&mut self) {
         self.items.clear();
     }
 
-    /// Forgets the last remembered item.
+    /// Removes the most recently remembered item.
     pub fn forget(&mut self) {
         self.items.pop();
     }
@@ -74,39 +51,43 @@ where
 }
 
 ext_impl! {
-    /**
-    Creates an iterator that allows remembering values
-    for the next iteration.
-
-    This is useful in situations where you need to:
-    - Read from the item, then use it in the next iteration.
-    - Insert items returned by the iterator.
-
-    ## How is this different from `peekable()`?
-    [Memory] is more flexible because unlike `Peekable`,
-    it allows you to own the value you are working with
-    and decide if you need to use it the next iteration.
-
-    Since `remember()` only takes owned values, you avoid
-    dealing with references and it can make the iterator easier to work with.
-
-    # Example
-    ```
-    # use rollercoaster::Rollercoaster;
-    #
-    let mut nums = vec![1, 2, 3, 4, 5].into_iter().memory();
-
-    for n in nums.by_ref() {
-        if n == 4 {
-            nums.remember(n);
-            break;
-        }
-    }
-
-    let summed: u32 = nums.sum();
-    assert_eq!(summed, 9);
-    ```
-    */
+    /// Creates an iterator that allows remembering one or more values
+    /// for the next iterations.
+    ///
+    /// ## Why?
+    /// Sometimes you are working with an iterator in a way
+    /// where you need to own values, and at the same time
+    /// conditionally perform some action on them across iterations.
+    ///
+    /// As an example, this is used in
+    /// [`group_by()`](crate::Rollercoaster::group_by) to allow lazy grouping.
+    ///
+    /// ## How is this different from `peekable()`?
+    /// Unlike [`Peekable`](std::iter::Peekable),
+    /// it allows you to own the value from the current iteration
+    /// and choose to use it again in the next one.
+    ///
+    /// Memory also works in the opposite way, there is no peeking
+    /// and instead you can check some condition in the _next_ iteration.
+    ///
+    /// # Example
+    /// ```
+    /// # use rollercoaster::Rollercoaster;
+    /// #
+    /// let mut nums = vec![1, 2, 3, 4, 5, 3].into_iter().memory();
+    ///
+    /// for n in nums.by_ref() {
+    ///     // When 4 is encountered, we want to sum it with
+    ///     // everything after it.
+    ///     if n == 4 {
+    ///         nums.remember(n);
+    ///         break;
+    ///     }
+    /// }
+    ///
+    /// let summed: u32 = nums.sum();
+    /// assert_eq!(summed, 12);
+    /// ```
     fn memory(self) -> Memory<Self> {
         Memory::new(self)
     }
