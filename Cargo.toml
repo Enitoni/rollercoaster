@@ -6,7 +6,7 @@ readme = "README.md"
 keywords = ["iterator", "loop", "sorting", "grouping", "unique"]
 categories = ["rust-patterns", "algorithms"]
 
-version = "0.0.2"
+version = "0.0.3"
 edition = "2021"
 license = "MIT"
 
