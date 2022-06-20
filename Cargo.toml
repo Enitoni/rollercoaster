@@ -1,6 +1,10 @@
 [package]
 name = "rollercoaster"
-description = "A set of useful iterators"
+description = "Extra iterators for grouping, sorting, arithmetic, and more."
+readme = "README.md"
+
+keywords = ["iterator", "loop", "sorting", "grouping", "unique"]
+categories = ["rust-patterns", "algorithms"]
 
 version = "0.0.2"
 edition = "2021"
